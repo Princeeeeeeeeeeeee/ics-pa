@@ -10,9 +10,6 @@
 static uint8_t *serial_port_base;
 
 void serial_io_handler(ioaddr_t addr, int len, bool is_write) {
-  uint16_t offset = addr - SERIAL_PORT;
-  fprintf(stderr, "DBG serial_io_handler: addr=0x%x offset=%u len=%d is_write=%d\n",
-    addr, offset, len, is_write);
   if (is_write) {
     assert(len == 1);
     if (addr == SERIAL_PORT + CH_OFFSET) {
@@ -29,5 +26,4 @@ void serial_io_handler(ioaddr_t addr, int len, bool is_write) {
 void init_serial() {
   serial_port_base = add_pio_map(SERIAL_PORT, 8, serial_io_handler);
   serial_port_base[LSR_OFFSET] = 0x20; /* the status is always free */
-  fprintf(stderr, "DBG init_serial: base=%p LSR=0x%02x\n", serial_port_base, serial_port_base[LSR_OFFSET]);
 }
