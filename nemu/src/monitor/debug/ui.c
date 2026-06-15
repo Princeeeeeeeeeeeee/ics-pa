@@ -149,7 +149,7 @@ static int cmd_x(char *args){
   }
 
   bool success = false;
-  vaddr_t addr = expr(p, &success);
+  vaddr_t base = expr(p, &success);
   if (!success) {
     printf("error in expr()\n");
     return 0;
@@ -157,10 +157,9 @@ static int cmd_x(char *args){
 
   printf("Memory:");
   for (int i = 0; i < nLen; i++) {
-    if (i % 4 == 0)
-      printf("\n0x%x:  0x%02x", addr + i, vaddr_read(addr + i, 1));
-    else
-      printf("  0x%02x", vaddr_read(addr + i, 1));
+    vaddr_t addr = base + i * 4;
+    uint32_t val = vaddr_read(addr, 4);
+    printf("\n0x%x:  0x%08x", addr, val);
   }
   printf("\n");
   return 0;
