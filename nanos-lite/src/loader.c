@@ -12,5 +12,5 @@ intptr_t loader(_Protect *as, const char *filename) {
   if (RAMDISK_SIZE) {
     ramdisk_read(DEFAULT_ENTRY, 0, RAMDISK_SIZE);
   }
-  return (uintptr_t)DEFAULT_ENTRY;
+  return (intptr_t)DEFAULT_ENTRY;
 }
