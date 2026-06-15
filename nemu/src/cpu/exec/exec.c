@@ -233,6 +233,8 @@ void exec_wrapper(bool print_flag) {
   exec_real(&decoding.seq_eip);
 
 #ifdef DEBUG
+  fprintf(stderr, "exec debug: cpu.eip=0x%x seq_eip(after exec_real)=0x%x decoding.is_jmp=%d decoding.jmp_eip=0x%x decoding.opcode=0x%x\n",
+    cpu.eip, decoding.seq_eip, decoding.is_jmp, decoding.jmp_eip, decoding.opcode);
   int instr_len = decoding.seq_eip - cpu.eip;
   sprintf(decoding.p, "%*.s", 50 - (12 + 3 * instr_len), "");
   strncat(decoding.asm_buf, decoding.assembly, 80);
