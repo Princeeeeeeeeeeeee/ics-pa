@@ -309,5 +309,14 @@ make_DHelper(out_a2dx) {
 void operand_write(Operand *op, rtlreg_t* src) {
   if (op->type == OP_TYPE_REG) { rtl_sr(op->reg, op->width, src); }
   else if (op->type == OP_TYPE_MEM) { rtl_sm(&op->addr, op->width, src); }
-  else { assert(0); }
+  else { 
+    fprintf(stderr, "operand_write: bad op type=%d width=%d\n", op->type, op->width);
+#ifdef DEBUG
+    if (op->type == OP_TYPE_IMM) {
+      fprintf(stderr, "  IMM: imm=0x%x str=%s\n", op->imm, op->str);
+    } else {
+      fprintf(stderr, "  op->str = %s\n", op->str);
+    }
+#endif
+    assert(0); }
 }
