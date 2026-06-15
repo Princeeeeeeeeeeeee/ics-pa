@@ -78,6 +78,7 @@ make_EHelper(movzx) {
 }
 
 make_EHelper(lea) {
+  Log("LEA at eip=0x%x: addr=0x%x dest_reg=%d", cpu.eip, id_src->addr, id_dest->reg);
   rtl_li(&t2, id_src->addr);
   operand_write(id_dest, &t2);
   print_asm_template2(lea);
