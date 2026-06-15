@@ -38,10 +38,10 @@ make_EHelper(sub) {
 make_EHelper(cmp) {
   //TODO();
   eflags_modify();
-  #ifdef DEBUG
+  /*#ifdef DEBUG
       fprintf(stderr, "DBG cmp: dest=0x%x src=0x%x res=0x%x width=%d opcode=0x%x\n",
           id_dest->val, id_src->val, t2, id_dest->width, decoding.opcode);
-  #endif //调试信息
+  #endif *///调试信息
   print_asm_template2(cmp);
 }
 
