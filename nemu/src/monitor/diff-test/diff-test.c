@@ -85,7 +85,7 @@ void init_difftest(void) {
       panic("parent has died!");
     }
 
-    //close(STDIN_FILENO);
+    //close(STDIN_FILENO);//更适合wsl宝宝体质
     int fd = open("/dev/null", O_RDONLY);
     if (fd < 0) {
       perror("open /dev/null");
