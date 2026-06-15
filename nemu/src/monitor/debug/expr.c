@@ -228,8 +228,8 @@ int findDominantOp(int p, int q){
 }
 
 int eval(int p, int q){
-  if(p>=q){
-    printf("error:p>=q in eval\n");
+  if(p>q){
+    printf("error:p>q in eval\n");
     return false;
   }
   else if(p==q){
