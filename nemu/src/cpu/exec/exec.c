@@ -251,7 +251,7 @@ void exec_wrapper(bool print_flag) {
     repeat = 0;
     prev_eip = cpu.eip;
   }
-  if (repeat > 50) {
+  if (repeat > 10) {
     fprintf(stderr, "fatal: possible infinite loop detected\n");
     fprintf(stderr, "  cpu.eip=0x%x decoding.opcode=0x%x seq_eip=0x%x is_jmp=%d jmp_eip=0x%x\n",
             cpu.eip, decoding.opcode, decoding.seq_eip, decoding.is_jmp, decoding.jmp_eip);
