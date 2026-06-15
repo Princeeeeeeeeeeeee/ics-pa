@@ -39,7 +39,7 @@ static inline make_DopHelper(SI) {
    op->simm = ???
    */
   //TODO();
-  op->simm = instr_fetch(eip, op->width);
+  //op->simm = instr_fetch(eip, op->width);
   uint32_t imm = instr_fetch(eip, op->width);
   if (op->width == 1) {
     op->simm = (int32_t)(int8_t)imm;
