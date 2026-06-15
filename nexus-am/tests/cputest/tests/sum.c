@@ -3,7 +3,7 @@
 int main() {
 	int i = 1;
 	volatile int sum = 0;
-	while(i <= 9) {
+	while(i <= 5) {
 		sum += i;
 		i ++;
 	}
