@@ -9,6 +9,8 @@ extern void ramdisk_read(void *buf, off_t offset, size_t len);
 
 intptr_t loader(_Protect *as, const char *filename) {
   //TODO();
-  ramdisk_read(DEFAULT_ENTRY, 0, RAMDISK_SIZE);
+  if (RAMDISK_SIZE) {
+    ramdisk_read(DEFAULT_ENTRY, 0, RAMDISK_SIZE);
+  }
   return (uintptr_t)DEFAULT_ENTRY;
 }
