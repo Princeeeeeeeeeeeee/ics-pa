@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <sys/prctl.h>
 #include <signal.h>
+#include <fcntl.h>
 
 #include "protocol.h"
 #include <stdlib.h>
@@ -84,7 +85,19 @@ void init_difftest(void) {
       panic("parent has died!");
     }
 
-    close(STDIN_FILENO);
+    //close(STDIN_FILENO);
+    int fd = open("/dev/null", O_RDONLY);
+    if (fd < 0) {
+      perror("open /dev/null");
+      panic("open /dev/null");
+    }
+    if (fd != STDIN_FILENO) {
+      if (dup2(fd, STDIN_FILENO) == -1) {
+        perror("dup2");
+        panic("dup2");
+      }
+      close(fd);
+    }
     execlp("qemu-system-i386", "qemu-system-i386", "-S", "-s", "-nographic", NULL);
     perror("exec");
     panic("exec error");
