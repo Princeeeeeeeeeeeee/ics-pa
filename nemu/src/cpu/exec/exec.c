@@ -1,6 +1,5 @@
 #include "cpu/exec.h"
 #include "all-instr.h"
-#include <stdlib.h>
 
 typedef struct {
   DHelper decode;
@@ -234,29 +233,14 @@ void exec_wrapper(bool print_flag) {
   exec_real(&decoding.seq_eip);
 
 #ifdef DEBUG
-  fprintf(stderr, "exec debug: cpu.eip=0x%x seq_eip(after exec_real)=0x%x decoding.is_jmp=%d decoding.jmp_eip=0x%x decoding.opcode=0x%x\n",
-    cpu.eip, decoding.seq_eip, decoding.is_jmp, decoding.jmp_eip, decoding.opcode);
+  /*fprintf(stderr, "exec debug: cpu.eip=0x%x seq_eip(after exec_real)=0x%x decoding.is_jmp=%d decoding.jmp_eip=0x%x decoding.opcode=0x%x\n",
+    cpu.eip, decoding.seq_eip, decoding.is_jmp, decoding.jmp_eip, decoding.opcode);*/
   int instr_len = decoding.seq_eip - cpu.eip;
   sprintf(decoding.p, "%*.s", 50 - (12 + 3 * instr_len), "");
   strncat(decoding.asm_buf, decoding.assembly, 80);
   Log_write("%s\n", decoding.asm_buf);
   if (print_flag) {
     puts(decoding.asm_buf);
-  }
-  static uint32_t prev_eip = 0;
-  static int repeat = 0;
-  if (cpu.eip == prev_eip) {
-    repeat ++;
-  } else {
-    repeat = 0;
-    prev_eip = cpu.eip;
-  }
-  if (repeat > 10) {
-    fprintf(stderr, "fatal: possible infinite loop detected\n");
-    fprintf(stderr, "  cpu.eip=0x%x decoding.opcode=0x%x seq_eip=0x%x is_jmp=%d jmp_eip=0x%x\n",
-            cpu.eip, decoding.opcode, decoding.seq_eip, decoding.is_jmp, decoding.jmp_eip);
-    /* 建议：在这里用 gdb 调试，或生成 core */
-    abort();
   }
 #endif
 
