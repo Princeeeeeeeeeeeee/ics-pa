@@ -49,8 +49,8 @@ static inline make_DopHelper(SI) {
   rtl_li(&op->val, op->simm);
 
 #ifdef DEBUG
-  fprintf(stderr, "decode SI: eip_of_imm=0x%x width=%d imm=0x%x simm=0x%x opcode=0x%x\n",
-    *eip - op->width, op->width, imm, (uint32_t)op->simm, decoding.opcode);
+  //fprintf(stderr, "decode SI: eip_of_imm=0x%x width=%d imm=0x%x simm=0x%x opcode=0x%x\n",
+  //  *eip - op->width, op->width, imm, (uint32_t)op->simm, decoding.opcode);
   snprintf(op->str, OP_STR_SIZE, "$0x%x", op->simm);
 #endif
 }
