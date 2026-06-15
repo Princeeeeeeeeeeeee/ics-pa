@@ -10,6 +10,7 @@
 static uint8_t *serial_port_base;
 
 void serial_io_handler(ioaddr_t addr, int len, bool is_write) {
+  uint16_t offset = addr - SERIAL_PORT;
   if (is_write) {
     assert(len == 1);
     if (addr == SERIAL_PORT + CH_OFFSET) {
@@ -20,6 +21,19 @@ void serial_io_handler(ioaddr_t addr, int len, bool is_write) {
         fflush(stdout);
       }
     }
+  }
+  else {
+    // ensure LSR bit5 (0x20) is seen as 1 so guests won't busy-wait forever
+    if (offset == LSR_OFFSET) {
+#ifdef DEBUG
+      fprintf(stderr, "DBG serial: read LSR at 0x%x, before=0x%x\n", addr, serial_port_base[LSR_OFFSET]);
+#endif
+      serial_port_base[LSR_OFFSET] |= 0x20;
+#ifdef DEBUG
+      fprintf(stderr, "DBG serial: read LSR at 0x%x, after=0x%x\n", addr, serial_port_base[LSR_OFFSET]);
+#endif
+    }
+    // ...existing read handling that returns serial_port_base[offset]...
   }
 }
 
