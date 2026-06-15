@@ -263,6 +263,11 @@ int eval(int p, int q){
   }
   else{
     int op = findDominantOp(p, q);
+    //findDominantOp的结果
+    if (op < p || op > q) {
+      printf("findDominantOp returned invalid op=%d for range [%d,%d]\n", op, p, q);
+      assert(0);
+    }
     vaddr_t addr;
     int result;
     switch(tokens[op].type){
@@ -326,5 +331,14 @@ uint32_t expr(char *e, bool *success) {
     }
   }
   *success = true;
+  /* DEBUG: print tokens for diagnosing parsing/eval errors */
+  printf("tokens (%d):", nr_token);
+  for (int i = 0; i < nr_token; i++) {
+    if (tokens[i].type >= 256)
+      printf(" [%d:%s]", i, tokens[i].str);
+    else
+      printf(" [%d:'%c']", i, (char)tokens[i].type);
+  }
+  printf("\n");
   return eval(0, nr_token-1);
 }
