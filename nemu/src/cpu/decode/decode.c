@@ -310,8 +310,11 @@ void operand_write(Operand *op, rtlreg_t* src) {
   if (op->type == OP_TYPE_REG) { rtl_sr(op->reg, op->width, src); }
   else if (op->type == OP_TYPE_MEM) { rtl_sm(&op->addr, op->width, src); }
   else { 
+    /* 更详细的诊断输出 */
     fprintf(stderr, "operand_write: bad op type=%d width=%d\n", op->type, op->width);
+    fprintf(stderr, "  cpu.eip=0x%x decoding.opcode=0x%x\n", cpu.eip, decoding.opcode);
 #ifdef DEBUG
+    fprintf(stderr, "  asm_buf: %s\n", decoding.asm_buf);
     if (op->type == OP_TYPE_IMM) {
       fprintf(stderr, "  IMM: imm=0x%x str=%s\n", op->imm, op->str);
     } else {
@@ -319,4 +322,4 @@ void operand_write(Operand *op, rtlreg_t* src) {
     }
 #endif
     assert(0); }
-}
+}//增加断言信息
