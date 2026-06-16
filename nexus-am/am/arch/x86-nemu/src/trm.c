@@ -30,8 +30,8 @@ static void serial_init() {
 
 void _putc(char ch) {
 #ifdef HAS_SERIAL
-  /*while ((inb(SERIAL_PORT + 5) & 0x20) == 0);
-  outb(SERIAL_PORT, ch);*/
+  while ((inb(SERIAL_PORT + 5) & 0x20) == 0);
+  outb(SERIAL_PORT, ch);
 
   /*const int SERIAL_MAX_SPIN = 1000000;
   int serial_spin = 0;
@@ -48,18 +48,19 @@ void _putc(char ch) {
     asm volatile("pause");
   }
   outb(SERIAL_PORT, ch);*/
-
-  int retries = 100; /* 少量重试以兼顾短暂延迟 */
+/*
+  int retries = 100; //少量重试以兼顾短暂延迟 
   while (retries-- > 0) {
-    if (inb(SERIAL_PORT + 5) & 0x20) { /* THR empty */
+    if (inb(SERIAL_PORT + 5) & 0x20) {
       outb(SERIAL_PORT, ch);
       return;
     }
-    /* 小让步，降低忙等带来的CPU占用（可改为 asm nop 如果 pause 有问题） */
+    //小让步，降低忙等带来的CPU占用（可改为 asm nop 如果 pause 有问题）
     asm volatile("pause");
   }
-  /* 未就绪，跳过写入 */
+  //未就绪，跳过写入
   (void)ch;
+  */
 #endif
 }
 
