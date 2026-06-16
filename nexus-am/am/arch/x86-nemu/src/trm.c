@@ -51,14 +51,14 @@ void _putc(char ch) {
 }
 
 void _halt(int code) {
-  /*asm volatile(".byte 0xd6" : :"a"(code));
+  asm volatile(".byte 0xd6" : :"a"(code));
 
   // should not reach here
-  while (1);*/
-  (void)code;
+  while (1);
+  /*(void)code;
   asm volatile("hlt");
   for (;;)
-    asm volatile("pause");
+    asm volatile("pause");*/
 }
 
 void _trm_init() {
