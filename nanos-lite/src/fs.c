@@ -77,4 +77,5 @@ int fs_close(int fd){
 
 void init_fs() {
   // TODO: initialize the size of /dev/fb
+  file_table[FD_FB].size = _screen.height * _screen.width * 4;
 }
