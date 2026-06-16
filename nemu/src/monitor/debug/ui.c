@@ -67,19 +67,19 @@ static struct {
 
 static int cmd_si(char *args){
   uint64_t N=0;
-  if (args)
+  /*if (args)
     printf("[debug] cmd_si args=\"%s\"\n", args);
   else
-    printf("[debug] cmd_si args=NULL\n");
+    printf("[debug] cmd_si args=NULL\n");*/
   if(args==NULL)
     N=1;
   else{
-    /*int nRet=sscanf(args,"%lu",&N);//llu无法运行，改成了lu
+    int nRet=sscanf(args,"%lu",&N);//llu无法运行，改成了lu
     if(nRet<=0){
       printf("args error in cmd_si\n");
       return 0;
-    }*/
-    char *p = args;
+    }
+    /*char *p = args;
     while (*p == ' ') p++;
     if (*p == '\0') {
       N = 1;
@@ -90,9 +90,9 @@ static int cmd_si(char *args){
         printf("args error in cmd_si\n");
         return 0;
       }
-    }
+    }*/
   }
-  printf("[debug] parsed N = %llu\n", (unsigned long long)N);
+  //printf("[debug] parsed N = %llu\n", (unsigned long long)N);
   cpu_exec(N);
   return 0;
 }
