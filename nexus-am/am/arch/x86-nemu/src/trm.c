@@ -30,10 +30,9 @@ static void serial_init() {
 
 void _putc(char ch) {
 #ifdef HAS_SERIAL
-  while ((inb(SERIAL_PORT + 5) & 0x20) == 0);
-  outb(SERIAL_PORT, ch);
-#endif
-  /*const int SERIAL_MAX_SPIN = 1000000;
+  /*while ((inb(SERIAL_PORT + 5) & 0x20) == 0);
+  outb(SERIAL_PORT, ch);*/
+  const int SERIAL_MAX_SPIN = 1000000;
   int serial_spin = 0;
   while ((inb(SERIAL_PORT + 5) & 0x20) == 0) {
     if (++serial_spin >= SERIAL_MAX_SPIN) {
@@ -47,7 +46,8 @@ void _putc(char ch) {
     }
     asm volatile("pause");
   }
-  outb(SERIAL_PORT, ch);*/
+  outb(SERIAL_PORT, ch);
+#endif
 }
 
 void _halt(int code) {
