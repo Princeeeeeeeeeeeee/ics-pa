@@ -249,8 +249,13 @@ void ui_mainloop(int is_batch_mode) {
 
   while (1) {
     char *str = rl_gets();
+    //char *str_end = str + strlen(str);
+    if (str == NULL) { /* EOF from readline (e.g. Ctrl-D) -> exit loop cleanly */
+      printf("\n"); /* keep terminal prompt neat */
+      break;
+    }
+    if (*str == '\0') { free(str); continue; }
     char *str_end = str + strlen(str);
-
     /* extract the first token as the command */
     char *cmd = strtok(str, " ");
     if (cmd == NULL) { continue; }
@@ -271,11 +276,13 @@ void ui_mainloop(int is_batch_mode) {
     int i;
     for (i = 0; i < NR_CMD; i ++) {
       if (strcmp(cmd, cmd_table[i].name) == 0) {
-        if (cmd_table[i].handler(args) < 0) { return; }
+        //if (cmd_table[i].handler(args) < 0) { return; }
+        if (cmd_table[i].handler(args) < 0) { free(str); return; }
         break;
       }
     }
 
     if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
+    free(str);
   }
 }
