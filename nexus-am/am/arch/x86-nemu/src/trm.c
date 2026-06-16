@@ -44,7 +44,7 @@ void _putc(char ch) {
       }
       break;
     }
-    //asm volatile("pause");
+    asm volatile("pause");
   }
   outb(SERIAL_PORT, ch);
 #endif
