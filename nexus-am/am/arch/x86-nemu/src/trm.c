@@ -30,7 +30,11 @@ static void serial_init() {
 
 void _putc(char ch) {
 #ifdef HAS_SERIAL
-  while ((inb(SERIAL_PORT + 5) & 0x20) == 0);
+  int timeout = 100000;
+  while ((inb(SERIAL_PORT + 5) & 0x20) == 0){
+    timeout--;
+    if (timeout == 0) return; // 超时直接丢掉字符
+  }
   outb(SERIAL_PORT, ch);
 #endif
 }
