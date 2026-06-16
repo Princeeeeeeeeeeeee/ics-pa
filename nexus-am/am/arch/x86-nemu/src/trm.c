@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 // Define this macro after serial has been implemented
-//#define HAS_SERIAL
+#define HAS_SERIAL
 
 #define SERIAL_PORT 0x3f8
 
@@ -39,12 +39,12 @@ void _putc(char ch) {
       const char *msg = "warning: serial LSR timeout\n";
       const char *p = msg;
       while (*p) {
-      while ((inb(SERIAL_PORT + 5) & 0x20) == 0) asm volatile("nop");
+      while ((inb(SERIAL_PORT + 5) & 0x20) == 0) asm volatile("pause");
       outb(SERIAL_PORT, *p++);
       }
       break;
     }
-    asm volatile("nop");
+    asm volatile("pause");
   }
   outb(SERIAL_PORT, ch);
 #endif
