@@ -184,7 +184,7 @@ int findDominantOp(int p, int q){
       level -= 1;
       if(level < 0){
         printf("error: unmatched ')' at %d in findDominantOp\n", curr);
-        return -1;
+        assert(0);
       }
       continue;
     }
