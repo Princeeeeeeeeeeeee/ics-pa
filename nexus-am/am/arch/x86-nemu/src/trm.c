@@ -39,12 +39,12 @@ void _putc(char ch) {
       const char *msg = "warning: serial LSR timeout\n";
       const char *p = msg;
       while (*p) {
-      while ((inb(SERIAL_PORT + 5) & 0x20) == 0) /*asm volatile("pause")*/;
+      while ((inb(SERIAL_PORT + 5) & 0x20) == 0) asm volatile("nop");
       outb(SERIAL_PORT, *p++);
       }
       break;
     }
-    asm volatile("pause");
+    asm volatile("nop");
   }
   outb(SERIAL_PORT, ch);
 #endif
