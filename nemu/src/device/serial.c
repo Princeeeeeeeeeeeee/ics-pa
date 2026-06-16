@@ -24,11 +24,8 @@ void serial_io_handler(ioaddr_t addr, int len, bool is_write) {
   else {
     // 读操作：LSR 永远返回 THRE 空闲
     if (addr == SERIAL_PORT + LSR_OFFSET) {
-      serial_port_base[LSR_OFFSET] = 0x20;
-    }
-    else {
-      // 读其他寄存器：返回 0（安全）
-      serial_port_base[addr - SERIAL_PORT] = 0;
+      /* 不写 serial_port_base，只让 NEMU 返回 0x20 */
+      return;
     }
   }
 }
