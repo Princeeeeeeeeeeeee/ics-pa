@@ -21,9 +21,10 @@ void dispinfo_read(void *buf, off_t offset, size_t len) {
 extern void getScreen(int* p_width, int* p_height);
 void fb_write(const void *buf, off_t offset, size_t len) {
   assert(offset%4==0 && len%4==0);
-  int index,screen_x1,screen_y1,screen_y2;
-  int width=0;
-
+  int index,screen_x,screen_y;
+  int width=0,height=0;
+  getScreen(&width, &height);
+  /*
   index=offset/4;
   screen_y1=index/width;
   screen_x1=index%width;
@@ -45,6 +46,13 @@ void fb_write(const void *buf, off_t offset, size_t len) {
   int tempy=screen_y2-screen_y1-1;
   _draw_rect(buf+tempw*4, 0, screen_y1+1, width, tempy);
   _draw_rect(buf+tempw*4+tempy*width*4, 0, screen_y2, len/4-tempw-tempy*width, 1);
+  */
+  for(int i=0; i<len/4; i++){
+    index=offset/4+i;
+    screen_x=index%width;
+    screen_y=index/width;
+    _draw_rect(buf+i*4, screen_x, screen_y, 1, 1);
+  }
 }
 
 void init_device() {
