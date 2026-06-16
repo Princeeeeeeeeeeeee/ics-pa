@@ -37,6 +37,7 @@ void _putc(char ch) {
   }*/
   while ((inb(SERIAL_PORT + 5) & 0x20) == 0);
   outb(SERIAL_PORT, ch);
+  //putchar(ch);
 #endif
 }
 
