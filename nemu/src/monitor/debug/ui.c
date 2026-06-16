@@ -130,7 +130,7 @@ static int cmd_info(char *args){
 }
 
 static int cmd_x(char *args){
-  int nLen=0;
+  /*int nLen=0;
   vaddr_t addr;
   int nRet=sscanf(args,"%d 0x%x",&nLen,&addr);
   if(nRet<=0){
@@ -145,8 +145,8 @@ static int cmd_x(char *args){
       printf("  0x%02x",vaddr_read(addr+i,1));
   }
   printf("\n");
-  return 0;
-  /*if (args == NULL) {
+  return 0;*/
+  if (args == NULL) {
     printf("args error in cmd_x\n");
     return 0;
   }
@@ -182,7 +182,7 @@ static int cmd_x(char *args){
     printf("\n0x%x:  0x%08x", addr, val);
   }
   printf("\n");
-  return 0;*/
+  return 0;
 }
 
 static int cmd_p(char *args){
