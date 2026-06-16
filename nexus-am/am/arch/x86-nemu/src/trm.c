@@ -56,7 +56,7 @@ void _putc(char ch) {
       return;
     }
     /* 小让步，降低忙等带来的CPU占用（可改为 asm nop 如果 pause 有问题） */
-    asm volatile("nop");
+    asm volatile("pause");
   }
   /* 未就绪，跳过写入 */
   (void)ch;
