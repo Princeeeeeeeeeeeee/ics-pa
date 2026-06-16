@@ -3,6 +3,9 @@
 #include "monitor/watchpoint.h"
 #include "nemu.h"
 
+#include <stdio.h>
+#include <string.h>
+
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
