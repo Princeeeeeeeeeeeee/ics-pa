@@ -21,16 +21,9 @@ void serial_io_handler(ioaddr_t addr, int len, bool is_write) {
       }
     }
   }
-  else {
-    // 读操作：LSR 永远返回 THRE 空闲
-    if (addr == SERIAL_PORT + LSR_OFFSET) {
-      /* 不写 serial_port_base，只让 NEMU 返回 0x20 */
-      return;
-    }
-  }
 }
 
 void init_serial() {
   serial_port_base = add_pio_map(SERIAL_PORT, 8, serial_io_handler);
-  //serial_port_base[LSR_OFFSET] = 0x20; /* the status is always free */
+  serial_port_base[LSR_OFFSET] = 0x20; /* the status is always free */
 }
