@@ -74,12 +74,12 @@ static int cmd_si(char *args){
   if(args==NULL)
     N=1;
   else{
-    /*int nRet=sscanf(args,"%lu",&N);//llu无法运行，改成了lu
+    int nRet=sscanf(args,"%lu",&N);//llu无法运行，改成了lu
     if(nRet<=0){
       printf("args error in cmd_si\n");
       return 0;
-    }*/
-    char *p = args;
+    }
+    /*char *p = args;
     while (*p == ' ') p++;
     if (*p == '\0') {
       N = 1;
@@ -92,7 +92,7 @@ static int cmd_si(char *args){
         return 0;
       }
       N = (uint64_t)val;
-    }
+    }*/
   }
   //printf("[debug] parsed N = %llu\n", (unsigned long long)N);
   cpu_exec(N);
