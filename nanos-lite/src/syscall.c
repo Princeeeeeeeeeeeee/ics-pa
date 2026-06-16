@@ -13,7 +13,7 @@ int sys_write(int fd, void* buf, size_t len){
   if(fd == 1 || fd == 2){
     char c;
     for(int i=0; i<len; i++){
-      memcpy(&c, buf+i, 1);
+      memcpy(&c, (char*)buf+i, 1);
       _putc(c);
     }
     return len;
@@ -43,5 +43,5 @@ _RegSet* do_syscall(_RegSet *r) {
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 
-  return NULL;
+  return r;
 }
