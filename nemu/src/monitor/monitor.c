@@ -81,7 +81,8 @@ static inline void load_img() {
 
 static inline void restart() {
   /* Set the initial instruction pointer. */
-  cpu.eip = ENTRY_START;
+  cpu.eip = ENTRY_START;//eip初始化
+  cpu.cs = 8;//cs初始化
   unsigned int origin = 2;
   memcpy(&cpu.eflags, &origin, sizeof(cpu.eflags));
 
