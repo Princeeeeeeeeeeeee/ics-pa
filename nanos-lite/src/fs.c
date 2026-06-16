@@ -59,30 +59,38 @@ int fs_open(const char* filename, int flags, int mode){
   return -1;
 }
 
+void dispinfo_read(void *buf, off_t offset, size_t len);
 ssize_t fs_read(int fd, void* buf, size_t len){
   assert(fd>=0 && fd<NR_FILES);
   if(fd<3){
-    Log("arg invaid:fd<3");
+    Log("arg invaid:fd<3 || fd==FD_FB");
     return 0;
   }
   int n=fs_filesz(fd)-get_open_offset(fd);
   if(n>len)
     n=len;
-  ramdisk_read(buf, disk_offset(fd)+get_open_offset(fd), n);
+  if(fd==FD_DISPINFO)
+    dispinfo_read(buf, get_open_offset(fd), n);
+  else
+    ramdisk_read(buf, disk_offset(fd)+get_open_offset(fd), n);
   set_open_offset(fd, get_open_offset(fd)+n);
   return n;
 }
 
+extern void fb_write(const void *buf, off_t offset, size_t len);
 ssize_t fs_write(int fd, void* buf, size_t len){
   assert(fd>=0 && fd<NR_FILES);
   if(fd<3){
-    Log("arg invaid:fd<3");
+    Log("arg invaid:fd<3 || fd==FD_DISPINFO");
     return 0;
   }
   int n=fs_filesz(fd)-get_open_offset(fd);
   if(n>len)
     n=len;
-  ramdisk_write(buf, disk_offset(fd)+get_open_offset(fd), n);
+  if(fd==FD_FB)
+    fb_write(buf, get_open_offset(fd), n);
+  else
+    ramdisk_write(buf, disk_offset(fd)+get_open_offset(fd), n);
   set_open_offset(fd, get_open_offset(fd)+n);
   return n;
 }
@@ -111,5 +119,9 @@ int fs_close(int fd){
 
 void init_fs() {
   // TODO: initialize the size of /dev/fb
-  file_table[FD_FB].size = _screen.height * _screen.width * 4;
+  extern void getScreen(int* p_width, int* p_height);
+  int width = 0, height = 0;
+  getScreen(&width, &height);
+  file_table[FD_FB].size = width * height * sizeof(uint32_t);
+  Log("set FD_FB size = %d", file_table[FD_FB].size);
 }
