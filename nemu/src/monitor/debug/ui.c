@@ -74,7 +74,7 @@ static int cmd_si(char *args){
   if(args==NULL)
     N=1;
   else{
-    int nRet=sscanf(args,"%lu",&N);//llu无法运行，改成了lu
+    int nRet=sscanf(args,"%llu",(unsigned long long*)N);//llu无法运行，改成了lu
     if(nRet<=0){
       printf("args error in cmd_si\n");
       return 0;
