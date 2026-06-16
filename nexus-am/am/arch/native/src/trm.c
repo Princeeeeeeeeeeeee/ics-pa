@@ -10,11 +10,11 @@ void _trm_init() {
 }
 
 void _putc(char ch) {
-  #ifdef HAS_SERIAL
+  /*#ifdef HAS_SERIAL
   while((inb(SERIAL_PORT + 5)& 0x20)==0);
   outb(SERIAL_PORT, ch);
-  #endif
-  //putchar(ch);
+  #endif*/
+  putchar(ch);
 }
 
 void _halt(int code) {
