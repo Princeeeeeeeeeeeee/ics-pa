@@ -95,4 +95,4 @@ void init_device() {
 void init_device() {
 }
 
-#endif	/* HAS_IOE */
+#endif	//HAS_IOE
