@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <errno.h>
 
 void cpu_exec(uint64_t);
 
@@ -66,6 +67,10 @@ static struct {
 
 static int cmd_si(char *args){
   uint64_t N=0;
+  if (args)
+    printf("[debug] cmd_si args=\"%s\"\n", args);
+  else
+    printf("[debug] cmd_si args=NULL\n");
   if(args==NULL)
     N=1;
   else{
@@ -87,6 +92,7 @@ static int cmd_si(char *args){
       }
     }
   }
+  printf("[debug] parsed N = %llu\n", (unsigned long long)N);
   cpu_exec(N);
   return 0;
 }
