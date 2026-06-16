@@ -53,6 +53,9 @@ int fs_open(const char* filename, int flags, int mode){
       return i;
   }
   panic("this filename not exist in file_table");
+  for (int i = 0; file_table[i].name != NULL; i++) {
+    printf("  [%d] %s (size=%u)\n", i, file_table[i].name, file_table[i].size);
+  }
   return -1;
 }
 
