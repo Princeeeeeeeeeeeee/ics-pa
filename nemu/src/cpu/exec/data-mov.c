@@ -70,10 +70,14 @@ make_EHelper(cltd) {
 
 make_EHelper(cwtl) {
   if (decoding.is_operand_size_16) {
-    TODO();
+    //TODO();
+    panic("operand size should be 32");
   }
   else {
-    TODO();
+    //TODO();
+    rtl_lr_w(&t0, R_AX);
+    rtl_sext(&t0, &t0, 2);
+    rtl_sr_l(R_EAX, &t0);
   }
 
   print_asm(decoding.is_operand_size_16 ? "cbtw" : "cwtl");
@@ -97,4 +101,20 @@ make_EHelper(lea) {
   rtl_li(&t2, id_src->addr);
   operand_write(id_dest, &t2);
   print_asm_template2(lea);
+}
+
+/* MOV CRx, r32 (0x0f 0x22): 从通用寄存器写入控制寄存器 */
+make_EHelper(mov_reg2cr) {
+  switch (id_src->reg) {
+    case 0: cpu.cr0.val = id_dest->val; break;
+    case 3: cpu.cr3.val = id_dest->val; break;
+    default: assert(0);
+  }
+  print_asm_template2(mov);
+}
+
+/* MOV r32, CRx (0x0f 0x20): 从控制寄存器读取到通用寄存器 */
+make_EHelper(mov_cr2reg) {
+  operand_write(id_dest, &id_src->val);
+  print_asm_template2(mov);
 }

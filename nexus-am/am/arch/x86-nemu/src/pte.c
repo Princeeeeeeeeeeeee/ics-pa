@@ -66,11 +66,45 @@ void _switch(_Protect *p) {
 }
 
 void _map(_Protect *p, void *va, void *pa) {
+  PDE *pdir = (PDE *)p->ptr;
+  uint32_t pdx = PDX(va);
+  uint32_t ptx = PTX(va);
+
+  /* 如果页目录项不存在，分配新的页表 */
+  if (!(pdir[pdx] & PTE_P)) {
+    void *ptab = palloc_f();
+    memset(ptab, 0, PGSIZE);
+    pdir[pdx] = (uintptr_t)ptab | PTE_P;
+  }
+
+  /* 填充页表项 */
+  PTE *ptab = (PTE *)PTE_ADDR(pdir[pdx]);
+  ptab[ptx] = (uintptr_t)pa | PTE_P;
 }
 
 void _unmap(_Protect *p, void *va) {
 }
 
 _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *const argv[], char *const envp[]) {
-  return NULL;
+  /* 在用户栈上初始化陷阱帧 */
+  _RegSet *tf = (_RegSet *)ustack.end - 1;
+
+  /* 先压入 _start() 函数的栈帧 (3个参数 + 返回地址) */
+  uintptr_t *sp = (uintptr_t *)tf;
+  *(--sp) = 0;  // envp = NULL
+  *(--sp) = 0;  // argv = NULL
+  *(--sp) = 0;  // argc = 0
+  *(--sp) = 0;  // return address (never returns)
+
+  /* 初始化陷阱帧 */
+  tf->edi = 0; tf->esi = 0; tf->ebp = 0;
+  tf->esp = (uintptr_t)sp;
+  tf->ebx = 0; tf->edx = 0; tf->ecx = 0; tf->eax = 0;
+  tf->irq = 0;
+  tf->error_code = 0;
+  tf->eip = (uintptr_t)entry;
+  tf->cs = 8;
+  tf->eflags = 2 | FL_IF;  // 设置 FL_IF 让用户进程可响应时钟中断
+
+  return tf;
 }

@@ -9,8 +9,11 @@ int main() {
     j ++;
     if (j == 10000) {
       printf("Hello World for the %dth time\n", i ++);
+      //printf("Hello World!\n");
       j = 0;
     }
   }
-  return 0;
+ /*
+ printf("Hello World!\n");
+  return 0;*/
 }

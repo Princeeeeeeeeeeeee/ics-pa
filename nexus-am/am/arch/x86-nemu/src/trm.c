@@ -30,37 +30,14 @@ static void serial_init() {
 
 void _putc(char ch) {
 #ifdef HAS_SERIAL
+  /*int timeout = 100000;
+  while ((inb(SERIAL_PORT + 5) & 0x20) == 0){
+    timeout--;
+    if (timeout == 0) return; // 超时直接丢掉字符
+  }*/
   while ((inb(SERIAL_PORT + 5) & 0x20) == 0);
   outb(SERIAL_PORT, ch);
-
-  /*const int SERIAL_MAX_SPIN = 1000000;
-  int serial_spin = 0;
-  while ((inb(SERIAL_PORT + 5) & 0x20) == 0) {
-    if (++serial_spin >= SERIAL_MAX_SPIN) {
-      const char *msg = "warning: serial LSR timeout\n";
-      const char *p = msg;
-      while (*p) {
-      while ((inb(SERIAL_PORT + 5) & 0x20) == 0) asm volatile("pause");
-      outb(SERIAL_PORT, *p++);
-      }
-      break;
-    }
-    asm volatile("pause");
-  }
-  outb(SERIAL_PORT, ch);*/
-/*
-  int retries = 100; //少量重试以兼顾短暂延迟 
-  while (retries-- > 0) {
-    if (inb(SERIAL_PORT + 5) & 0x20) {
-      outb(SERIAL_PORT, ch);
-      return;
-    }
-    //小让步，降低忙等带来的CPU占用（可改为 asm nop 如果 pause 有问题）
-    asm volatile("pause");
-  }
-  //未就绪，跳过写入
-  (void)ch;
-  */
+  //putchar(ch);
 #endif
 }
 

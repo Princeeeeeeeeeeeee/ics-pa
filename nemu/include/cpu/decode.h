@@ -102,6 +102,7 @@ make_DHelper(gp2_Ib2E);
 
 make_DHelper(O2a);
 make_DHelper(a2O);
+make_DHelper(cR);
 
 make_DHelper(J);
 

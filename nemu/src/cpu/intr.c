@@ -24,7 +24,11 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
   #endif
   decoding.is_jmp = 1;
   decoding.jmp_eip = target_addr;
+
+  // 保存eflags后关中断
+  cpu.eflags.IF = 0;
 }
 
 void dev_raise_intr() {
+  cpu.INTR = true;
 }
