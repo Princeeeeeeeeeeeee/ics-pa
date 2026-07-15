@@ -49,8 +49,10 @@ extern void ramdisk_write(void *buf, off_t offset, size_t len);
 
 int fs_open(const char* filename, int flags, int mode){
   for(int i=0; i<NR_FILES; i++){
-    if(strcmp(filename, file_table[i].name)==0)
+    if(strcmp(filename, file_table[i].name)==0) {
+      set_open_offset(i, 0);  // 重置文件偏移指针
       return i;
+    }
   }
   panic("this filename not exist in file_table");
   for (int i = 0; file_table[i].name != NULL; i++) {

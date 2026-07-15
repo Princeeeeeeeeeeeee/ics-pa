@@ -1,5 +1,7 @@
 #include "common.h"
 
+extern void switch_current_game();
+
 #define NAME(key) \
   [_KEY_##key] = #key,
 
@@ -17,8 +19,13 @@ size_t events_read(void *buf, size_t len) {
     key^=0x8000;//获得该通码表示的按键位置
     down=true;
   }
-  if(key!=_KEY_NONE)
+  if(key!=_KEY_NONE) {
     sprintf(str,"%s %s\n",down?"kd":"ku",keyname[key]);//按键事件
+    // F12按下时切换当前游戏
+    if(key == _KEY_F12 && down) {
+      switch_current_game();
+    }
+  }
   else
     sprintf(str,"t %d\n",_uptime());//时钟事件
     //Log("%s",str);
