@@ -35,6 +35,7 @@ int main() {
   // 加载用户程序
   load_prog("/bin/pal");
   load_prog("/bin/hello");
+  load_prog("/bin/videotest");
 
   // 通过内核自陷触发第一次上下文切换
   _trap();
