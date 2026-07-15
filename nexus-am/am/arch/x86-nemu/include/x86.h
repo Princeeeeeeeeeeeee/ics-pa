@@ -110,6 +110,12 @@ static inline void set_cr3(void *pdir) {
   asm volatile("movl %0, %%cr3" : : "r"(pdir));
 }
 
+static inline uint32_t get_cr3(void) {
+  volatile uint32_t val;
+  asm volatile("movl %%cr3, %0" : "=r"(val));
+  return val;
+}
+
 static inline uint8_t inb(int port) {
   char data;
   asm volatile("inb %1, %0" : "=a"(data) : "d"((uint16_t)port));

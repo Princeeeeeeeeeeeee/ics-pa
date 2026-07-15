@@ -1,6 +1,8 @@
 #include "cpu/exec.h"
 #include "all-instr.h"
 
+extern void raise_intr(uint8_t NO, vaddr_t ret_addr);
+
 typedef struct {
   DHelper decode;
   EHelper execute;
@@ -148,7 +150,7 @@ opcode_entry opcode_table [512] = {
   /* 0x14 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x18 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x1c */	EMPTY, EMPTY, EMPTY, EMPTY,
-  /* 0x20 */	EMPTY, EMPTY, EMPTY, EMPTY,
+  /* 0x20 */	IDEX(cR, mov_cr2reg), EMPTY, IDEX(cR, mov_reg2cr), EMPTY,
   /* 0x24 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x28 */	EMPTY, EMPTY, EMPTY, EMPTY,
   /* 0x2c */	EMPTY, EMPTY, EMPTY, EMPTY,
@@ -255,4 +257,11 @@ void exec_wrapper(bool print_flag) {
   void difftest_step(uint32_t);
   difftest_step(eip);
 #endif
+
+  /* 检查硬件中断: 每条指令执行完后查看INTR引脚 */
+  if (cpu.INTR && cpu.eflags.IF) {
+    cpu.INTR = false;
+    raise_intr(32, cpu.eip);
+    update_eip();
+  }
 }

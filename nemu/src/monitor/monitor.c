@@ -85,6 +85,8 @@ static inline void restart() {
   cpu.cs = 8;//cs初始化
   unsigned int origin = 2;
   memcpy(&cpu.eflags, &origin, sizeof(cpu.eflags));
+  cpu.cr0.val = 0x60000011;
+  cpu.INTR = false;
 
 #ifdef DIFF_TEST
   init_qemu_reg();

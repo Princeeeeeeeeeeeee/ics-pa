@@ -322,6 +322,35 @@ make_DHelper(lidt_a){
   decode_op_a(eip, id_dest, true);
 }
 
+/* 解码 MOV CRx 指令的 ModR/M 字节
+ * reg 字段 = CRx 编号 (0=CR0, 3=CR3)
+ * R/M 字段 = 通用寄存器编号
+ */
+make_DHelper(cR) {
+  ModR_M m;
+  m.val = instr_fetch(eip, 1);
+  assert(m.mod == 3);
+
+  /* id_src: CRx */
+  id_src->type = OP_TYPE_REG;
+  id_src->reg = m.reg;
+  switch (m.reg) {
+    case 0: id_src->val = cpu.cr0.val; break;
+    case 3: id_src->val = cpu.cr3.val; break;
+    default: assert(0);
+  }
+
+  /* id_dest: 通用寄存器 */
+  id_dest->type = OP_TYPE_REG;
+  id_dest->reg = m.R_M;
+  rtl_lr(&id_dest->val, m.R_M, id_dest->width);
+
+#ifdef DEBUG
+  snprintf(id_src->str, OP_STR_SIZE, "%%cr%d", m.reg);
+  snprintf(id_dest->str, OP_STR_SIZE, "%%%s", reg_name(m.R_M, id_dest->width));
+#endif
+}
+
 void operand_write(Operand *op, rtlreg_t* src) {
   if (op->type == OP_TYPE_REG) { rtl_sr(op->reg, op->width, src); }
   else if (op->type == OP_TYPE_MEM) { rtl_sm(&op->addr, op->width, src); }

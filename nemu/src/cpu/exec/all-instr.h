@@ -59,3 +59,5 @@ make_EHelper(pusha);
 make_EHelper(popa);
 make_EHelper(iret);
 make_EHelper(cwtl);
+make_EHelper(mov_cr2reg);
+make_EHelper(mov_reg2cr);
